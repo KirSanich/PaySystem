@@ -49,7 +49,6 @@ public class UserService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
             role.getAuthorityCollection().stream()
                     .map(p -> new SimpleGrantedAuthority(p.getDescription()))
                     .forEach(authorities::add);
