@@ -22,8 +22,7 @@ public class AccountDetailsMapper {
         this.transferMapper = transferMapper;
     }
 
-    public AccountDetailsDTO fromAccountDetailsToDTO(AccountDetails accountDetails)
-    {
+    public AccountDetailsDTO fromAccountDetailsToDTO(AccountDetails accountDetails) {
         return AccountDetailsDTO.builder()
                 .id(accountDetails.getId())
                 .money(accountDetails.getMoney())
