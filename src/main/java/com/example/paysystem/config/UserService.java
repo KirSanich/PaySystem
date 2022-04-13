@@ -1,5 +1,6 @@
 package com.example.paysystem.config;
 
+import com.example.paysystem.entity.Authority;
 import com.example.paysystem.entity.Role;
 import com.example.paysystem.entity.User;
 import com.example.paysystem.exception.UserWithUsernameNotFound;
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,9 +30,8 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public User findByUsername(String username)
-    {
-        return userRepository.findUserByUsername(username).orElseThrow(()->new UserWithUsernameNotFound("No found user with username:"+username));
+    public User findByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UserWithUsernameNotFound("No found user with username:" + username));
     }
 
     @Override
@@ -41,10 +43,18 @@ public class UserService implements UserDetailsService {
                 .password(user.getPassword())
                 .authorities(mapRolesToAuthorities(user.getRoles()))
                 .build();
+
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles)
-    {
-        return roles.stream().map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getAuthorityCollection().stream()
+                    .map(p -> new SimpleGrantedAuthority(p.getDescription()))
+                    .forEach(authorities::add);
+        }
+
+        return authorities;
     }
 }

@@ -6,8 +6,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @EnableWebSecurity
@@ -15,9 +13,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
 
+    private final PaySystemPasswordEncoder passwordEncoder;
+
     @Autowired
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, PaySystemPasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -25,8 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/users").hasRole("ADMIN")
-                .antMatchers("/auth").authenticated()
+                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers("/auth/**").authenticated()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
@@ -35,14 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder.passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userService);
         return daoAuthenticationProvider;
     }

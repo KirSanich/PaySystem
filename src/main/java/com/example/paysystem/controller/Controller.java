@@ -27,11 +27,6 @@ public class Controller {
     @Autowired
     private final UserMapper userMapper;
 
-    @GetMapping()
-    public ResponseEntity<String> homeText(){
-        return new ResponseEntity<>("Homepage access for everyone",HttpStatus.OK);
-    }
-
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers(Principal principal)
     {
@@ -41,10 +36,5 @@ public class Controller {
                 .map(userMapper::fromUserToDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(userList, HttpStatus.OK);
-    }
-
-    @GetMapping("/auth")
-    public ResponseEntity<String> textForAuth(){
-        return new ResponseEntity<>("Homepage access for authenticated user ",HttpStatus.OK);
     }
 }
