@@ -1,5 +1,6 @@
 package com.example.paysystem.config;
 
+import com.example.paysystem.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -7,6 +8,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,11 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users/{id}/**").hasRole("ADMIN")
-                .antMatchers("/users/**").hasRole("ADMIN")
-                .antMatchers("/users/update/**").hasRole("ADMIN")
-                .antMatchers("/create/**").hasAuthority("WRITE")
-                .antMatchers(HttpMethod.DELETE, "/users/delete/{id}").hasAuthority("WRITE")
+                .antMatchers(HttpMethod.GET, "/users/{id}/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/users/update/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/create/**").hasAuthority("WRITE")
+                .antMatchers(HttpMethod.DELETE, "/users/delete/{id}").hasRole("ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").permitAll()
                 .anyRequest()
@@ -41,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {

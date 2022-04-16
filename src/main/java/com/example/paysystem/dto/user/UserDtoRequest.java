@@ -1,20 +1,21 @@
-package com.example.paysystem.dto;
+package com.example.paysystem.dto.user;
 
-import com.example.paysystem.entity.AccountDetails;
 import lombok.*;
-
-import java.util.List;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDTO {
+public class UserDtoRequest {
+
+    private Long id;
 
     private String username;
 
     private String name;
 
     private int age;
+
+    private String email;
 
 }

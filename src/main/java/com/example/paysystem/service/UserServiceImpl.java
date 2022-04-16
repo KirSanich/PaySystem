@@ -51,15 +51,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        log.info("Searching user with username:{} for updating", user.getUsername());
-        User userFromDb = findUserByUsername(user.getUsername());
-        log.info("Upadating user");
-        return User.builder()
+        log.info("Searching user with id:{} for updating", user.getId());
+        User userFromDb = findUserById(user.getId());
+        log.info("Updating user");
+        User updatedUser = User.builder()
                 .id(userFromDb.getId())
                 .username(user.getUsername())
                 .name(user.getName())
                 .age(user.getAge())
                 .email(user.getEmail())
                 .build();
+        userRepository.save(updatedUser);
+        return updatedUser;
+
     }
 }

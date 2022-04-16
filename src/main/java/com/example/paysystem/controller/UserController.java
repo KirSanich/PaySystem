@@ -1,7 +1,8 @@
 package com.example.paysystem.controller;
 
 
-import com.example.paysystem.dto.UserDTO;
+import com.example.paysystem.dto.user.UserDtoRequest;
+import com.example.paysystem.dto.user.UserDtoResponse;
 import com.example.paysystem.entity.User;
 import com.example.paysystem.mapper.user.UserMapper;
 import com.example.paysystem.service.UserService;
@@ -27,7 +28,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<?> getAllUsers() {
-        List<UserDTO> userList = userService.getAllUsers()
+        List<UserDtoResponse> userList = userService.getAllUsers()
                 .stream()
                 .map(userMapper::fromUserToDTO)
                 .collect(Collectors.toList());
@@ -36,8 +37,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        UserDTO userDTO = userMapper.fromUserToDTO(userService.findUserById(id));
-        return new ResponseEntity<>(userDTO, HttpStatus.FOUND);
+        UserDtoResponse userDtoResponse = userMapper.fromUserToDTO(userService.findUserById(id));
+        return new ResponseEntity<>(userDtoResponse, HttpStatus.FOUND);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -47,15 +48,15 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
-      User user = userMapper.fromUserDTOtoUser(userDTO);
+    public ResponseEntity<?> saveUser(@RequestBody UserDtoRequest userDtoRequest) {
+      User user = userMapper.fromUserDtoForSaveToUser(userDtoRequest);
       userService.saveUser(user);
       return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO) {
-        User user = userMapper.fromUserDTOtoUser(userDTO);
+    public ResponseEntity<?> updateUser(@RequestBody UserDtoRequest userDtoRequest) {
+        User user = userMapper.fromUserDtoForUpdateToUser(userDtoRequest);
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
