@@ -23,6 +23,9 @@ public class AccountDetails {
     @Column(name = "money")
     private BigDecimal money;
 
+    @Column(name = "type")
+    private String type;
+
     @OneToMany(mappedBy = "accountDetails",fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.MERGE})
     private List<Transfer> transferList;
 

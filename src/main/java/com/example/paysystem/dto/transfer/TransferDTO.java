@@ -1,4 +1,4 @@
-package com.example.paysystem.dto;
+package com.example.paysystem.dto.transfer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

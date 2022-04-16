@@ -1,10 +1,11 @@
-package com.example.paysystem.dto;
+package com.example.paysystem.dto.accountdetails;
 
-import com.example.paysystem.entity.Transfer;
+import com.example.paysystem.dto.transfer.TransferDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,12 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AccountDetailsDTO {
+public class AccountDetailsDtoResponse {
 
     private Long id;
 
     private BigDecimal money;
 
     private List<TransferDTO> transferDTOS;
+
+    private Long userId;
+
 
 }

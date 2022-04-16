@@ -1,4 +1,4 @@
-package com.example.paysystem.config;
+package com.example.paysystem.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

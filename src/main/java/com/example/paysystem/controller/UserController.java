@@ -8,8 +8,10 @@ import com.example.paysystem.mapper.user.UserMapper;
 import com.example.paysystem.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,9 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
+    private final com.example.paysystem.security.UserService userSecurityService;
+
+    @Autowired
     private final UserMapper userMapper;
 
     @GetMapping("")
@@ -36,7 +41,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
+    public ResponseEntity<?> getUser(@PathVariable Long id, Authentication authentication) {
+        userSecurityService.verifyId(authentication,id);
         UserDtoResponse userDtoResponse = userMapper.fromUserToDTO(userService.findUserById(id));
         return new ResponseEntity<>(userDtoResponse, HttpStatus.FOUND);
     }
@@ -47,11 +53,11 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.GONE);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/save")
     public ResponseEntity<?> saveUser(@RequestBody UserDtoRequest userDtoRequest) {
-      User user = userMapper.fromUserDtoForSaveToUser(userDtoRequest);
-      userService.saveUser(user);
-      return new ResponseEntity<>(HttpStatus.CREATED);
+        User user = userMapper.fromUserDtoForSaveToUser(userDtoRequest);
+        userService.saveUser(user);
+        return new ResponseEntity<>(HttpStatus.GONE);
     }
 
     @PutMapping("/update")

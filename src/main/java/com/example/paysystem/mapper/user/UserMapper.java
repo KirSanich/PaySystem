@@ -3,13 +3,14 @@ package com.example.paysystem.mapper.user;
 import com.example.paysystem.dto.user.UserDtoRequest;
 import com.example.paysystem.dto.user.UserDtoResponse;
 import com.example.paysystem.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserMapper {
 
     @Autowired

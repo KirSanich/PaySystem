@@ -1,15 +1,19 @@
 package com.example.paysystem.service;
 
 import com.example.paysystem.entity.User;
+import com.example.paysystem.exception.NoHasAccessForThisInformation;
 import com.example.paysystem.exception.UserWithCurrentIdNotFound;
 import com.example.paysystem.exception.UserWithUsernameNotFound;
 import com.example.paysystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -63,6 +67,6 @@ public class UserServiceImpl implements UserService {
                 .build();
         userRepository.save(updatedUser);
         return updatedUser;
-
     }
+
 }
