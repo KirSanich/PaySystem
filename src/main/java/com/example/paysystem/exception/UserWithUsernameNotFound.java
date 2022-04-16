@@ -1,6 +1,6 @@
 package com.example.paysystem.exception;
 
-public class UserWithUsernameNotFound extends RuntimeException{
+public class UserWithUsernameNotFound extends UserException{
     public UserWithUsernameNotFound() {
         super();
     }

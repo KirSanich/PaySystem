@@ -1,37 +1,65 @@
 package com.example.paysystem.service;
 
 import com.example.paysystem.entity.User;
+import com.example.paysystem.exception.UserWithCurrentIdNotFound;
 import com.example.paysystem.exception.UserWithUsernameNotFound;
-import com.example.paysystem.repository.RoleRepository;
 import com.example.paysystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private final RoleRepository roleRepository;
-
     @Override
     public List<User> getAllUsers() {
-        log.info("Get all users");
+        log.info("Getting all users");
         return userRepository.findAll();
     }
 
     @Override
+    public void deleteUserById(Long id) {
+        log.info("Deleting user with id:{}", id);
+        userRepository.delete(findUserById(id));
+    }
+
+    @Override
     public User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username).orElseThrow(()->new UserWithUsernameNotFound("No found user with username:"+username));
+        log.info("Searching user with username:{}", username);
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UserWithUsernameNotFound("No found user with username:" + username));
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        log.info("Searching user with id:{}", id);
+        return userRepository.findById(id).orElseThrow(() -> new UserWithCurrentIdNotFound("No found user with id:" + id));
+    }
+
+    @Override
+    public void saveUser(User user) {
+        log.info("Saving user");
+        userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        log.info("Searching user with username:{} for updating", user.getUsername());
+        User userFromDb = findUserByUsername(user.getUsername());
+        log.info("Upadating user");
+        return User.builder()
+                .id(userFromDb.getId())
+                .username(user.getUsername())
+                .name(user.getName())
+                .age(user.getAge())
+                .email(user.getEmail())
+                .build();
     }
 }

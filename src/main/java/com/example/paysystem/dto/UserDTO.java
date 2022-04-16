@@ -1,14 +1,12 @@
 package com.example.paysystem.dto;
 
 import com.example.paysystem.entity.AccountDetails;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserDTO {
@@ -19,5 +17,4 @@ public class UserDTO {
 
     private int age;
 
-    private List<AccountDetailsDTO> accountDetailsList;
 }

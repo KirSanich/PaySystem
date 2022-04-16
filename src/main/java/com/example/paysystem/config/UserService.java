@@ -1,6 +1,5 @@
 package com.example.paysystem.config;
 
-import com.example.paysystem.entity.Authority;
 import com.example.paysystem.entity.Role;
 import com.example.paysystem.entity.User;
 import com.example.paysystem.exception.UserWithUsernameNotFound;
@@ -17,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("securityService")
 public class UserService implements UserDetailsService {
@@ -38,20 +35,24 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
-        return org.springframework.security.core.userdetails.User.builder()
+        UserDetails build = org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(mapRolesToAuthorities(user.getRoles()))
                 .build();
+        System.out.println(build.getAuthorities());
+        System.out.println(build.getUsername());
+        return build;
 
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
             role.getAuthorityCollection().stream()
                     .map(p -> new SimpleGrantedAuthority(p.getDescription()))
-                    .forEach(authorities::add);
+                    .forEachOrdered(authorities::add);
         }
 
         return authorities;
