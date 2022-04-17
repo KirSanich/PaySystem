@@ -17,8 +17,8 @@ import java.util.List;
 public class AccountDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
-    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_details_id_seq")
+    @SequenceGenerator(name = "account_details_id_seq", sequenceName = "account_details_id_seq",allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

@@ -25,10 +25,10 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final com.example.paysystem.service.UserService userCommonService;
+    private final com.example.paysystem.service.user.UserService userCommonService;
 
     @Autowired
-    public UserService(UserRepository userRepository, com.example.paysystem.service.UserService userCommonService) {
+    public UserService(UserRepository userRepository, com.example.paysystem.service.user.UserService userCommonService) {
         this.userRepository = userRepository;
         this.userCommonService = userCommonService;
     }
@@ -64,7 +64,6 @@ public class UserService implements UserDetailsService {
     public boolean verifyId(Authentication authentication, Long id) {
         UserDetails searcher = loadUserByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
         User user = userCommonService.findUserByUsername(searcher.getUsername());
-        System.out.println(searcher.getUsername());
         if(!Objects.equals(user.getId(), id))
         {
             throw new NoHasAccessForThisInformation("You dont have permission for this information");

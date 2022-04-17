@@ -1,4 +1,4 @@
-package com.example.paysystem.service;
+package com.example.paysystem.service.accountdetails;
 
 import com.example.paysystem.entity.AccountDetails;
 
@@ -10,4 +10,6 @@ public interface AccountDetailsService {
     void createAccount(AccountDetails accountDetails);
 
     AccountDetails findAccountById(Long id);
+
+    void updateAccountDetails(AccountDetails accountDetails);
 }

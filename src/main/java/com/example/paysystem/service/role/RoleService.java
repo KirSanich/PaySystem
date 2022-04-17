@@ -1,4 +1,4 @@
-package com.example.paysystem.service;
+package com.example.paysystem.service.role;
 
 import com.example.paysystem.entity.Role;
 import com.example.paysystem.entity.User;

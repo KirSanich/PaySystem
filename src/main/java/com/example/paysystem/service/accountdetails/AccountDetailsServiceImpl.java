@@ -1,9 +1,10 @@
-package com.example.paysystem.service;
+package com.example.paysystem.service.accountdetails;
 
 
 import com.example.paysystem.entity.AccountDetails;
 import com.example.paysystem.exception.accountdetails.AccountDetailsWithCurrentIdNotFound;
 import com.example.paysystem.repository.AccountDetailsRepository;
+import com.example.paysystem.service.accountdetails.AccountDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,11 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     public AccountDetails findAccountById(Long id) {
         log.info("Searching account with id:{}", id);
         return accountDetailsRepository.findById(id).orElseThrow(() -> new AccountDetailsWithCurrentIdNotFound("No found account with id " + id));
+    }
+
+    @Override
+    public void updateAccountDetails(AccountDetails accountDetails) {
+        log.info("Updating account details");
+        accountDetailsRepository.save(accountDetails);
     }
 }

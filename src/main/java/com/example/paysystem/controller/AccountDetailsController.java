@@ -3,10 +3,9 @@ package com.example.paysystem.controller;
 
 import com.example.paysystem.dto.accountdetails.AccountDetailsDtoRequest;
 import com.example.paysystem.dto.accountdetails.AccountDetailsDtoResponse;
-import com.example.paysystem.dto.user.UserDtoResponse;
 import com.example.paysystem.entity.AccountDetails;
 import com.example.paysystem.mapper.accountdetails.AccountDetailsMapper;
-import com.example.paysystem.service.AccountDetailsService;
+import com.example.paysystem.service.accountdetails.AccountDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ public class AccountDetailsController {
     private final AccountDetailsService accountDetailsService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAccountDetails() {
+    public ResponseEntity<?> getAllAccountDetails() {
         List<AccountDetailsDtoResponse> accountDetailsList = accountDetailsService.getAllAccountDetails()
                 .stream().map(accountDetailsMapper::fromAccountDetailsToDtoResponse)
                 .collect(Collectors.toList());

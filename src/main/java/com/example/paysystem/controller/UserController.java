@@ -5,7 +5,7 @@ import com.example.paysystem.dto.user.UserDtoRequest;
 import com.example.paysystem.dto.user.UserDtoResponse;
 import com.example.paysystem.entity.User;
 import com.example.paysystem.mapper.user.UserMapper;
-import com.example.paysystem.service.UserService;
+import com.example.paysystem.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +54,7 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UserDtoRequest userDtoRequest) {
-        User user = userMapper.fromUserDtoForSaveToUser(userDtoRequest);
+        User user = userMapper.fromUserDtoForCreateToUser(userDtoRequest);
         userService.createUser(user);
         return new ResponseEntity<>(HttpStatus.GONE);
     }

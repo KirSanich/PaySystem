@@ -1,9 +1,10 @@
-package com.example.paysystem.service;
+package com.example.paysystem.service.user;
 
 import com.example.paysystem.entity.User;
 import com.example.paysystem.exception.user.UserWithCurrentIdNotFound;
 import com.example.paysystem.exception.user.UserWithUsernameNotFound;
 import com.example.paysystem.repository.UserRepository;
+import com.example.paysystem.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

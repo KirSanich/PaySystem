@@ -22,7 +22,7 @@ public class UserMapper {
                 .build();
     }
 
-    public User fromUserDtoForSaveToUser(UserDtoRequest userDtoRequest)
+    public User fromUserDtoForCreateToUser(UserDtoRequest userDtoRequest)
     {
         return User.builder()
                 .username(userDtoRequest.getUsername())

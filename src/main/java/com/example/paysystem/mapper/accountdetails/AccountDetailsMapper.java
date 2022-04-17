@@ -3,7 +3,7 @@ package com.example.paysystem.mapper.accountdetails;
 import com.example.paysystem.dto.accountdetails.AccountDetailsDtoRequest;
 import com.example.paysystem.dto.accountdetails.AccountDetailsDtoResponse;
 import com.example.paysystem.entity.AccountDetails;
-import com.example.paysystem.service.UserService;
+import com.example.paysystem.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
