@@ -1,5 +1,6 @@
 package com.example.paysystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,14 +17,15 @@ import java.util.List;
 public class AccountDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq",allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "money")
     private BigDecimal money;
 
-    @Column(name = "type")
+    @Column(name = "type",unique = true)
     private String type;
 
     @OneToMany(mappedBy = "accountDetails",fetch = FetchType.LAZY,cascade = {CascadeType.REFRESH,CascadeType.MERGE})

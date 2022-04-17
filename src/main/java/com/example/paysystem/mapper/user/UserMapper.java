@@ -4,7 +4,6 @@ import com.example.paysystem.dto.user.UserDtoRequest;
 import com.example.paysystem.dto.user.UserDtoResponse;
 import com.example.paysystem.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class UserMapper {
     @Autowired
     private final ModelMapper modelMapper;
 
-    public UserDtoResponse fromUserToDTO(User user) {
+    public UserDtoResponse fromUserToDtoResponse(User user) {
         return UserDtoResponse.builder()
                 .username(user.getUsername())
                 .city(user.getCity())

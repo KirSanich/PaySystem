@@ -2,7 +2,6 @@ package com.example.paysystem.service;
 
 
 import com.example.paysystem.entity.User;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public interface UserService {
 
     User findUserById(Long id);
 
-    void saveUser(User user);
+    void createUser(User user);
 
     User updateUser(User user);
 

@@ -1,6 +1,8 @@
-package com.example.paysystem.exception;
+package com.example.paysystem.exception.user;
 
-public class UserWithUsernameNotFound extends UserException{
+import com.example.paysystem.exception.user.UserException;
+
+public class UserWithUsernameNotFound extends UserException {
     public UserWithUsernameNotFound() {
         super();
     }

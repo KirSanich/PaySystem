@@ -1,4 +1,4 @@
-package com.example.paysystem.exception;
+package com.example.paysystem.exception.user;
 
 public abstract class UserException extends RuntimeException {
     public UserException() {

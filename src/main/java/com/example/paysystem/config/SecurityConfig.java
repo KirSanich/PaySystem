@@ -30,14 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/users/{id}/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/users/update/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/create/**").hasAuthority("WRITE")
+                .antMatchers(HttpMethod.POST, "/save/**").hasAuthority("WRITE")
                 .antMatchers(HttpMethod.DELETE, "/users/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/accounts/{id}/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/accounts/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/accounts/create/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().
-                httpBasic()
+                .and()
+                .httpBasic()
                 .and().logout().logoutSuccessUrl("/");
 
     }
