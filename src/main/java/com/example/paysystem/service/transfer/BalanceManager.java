@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -21,7 +20,7 @@ public class BalanceManager implements Updatable {
     private final AccountDetailsService accountDetailsService;
 
     @Override
-    public void updateAccountBalance(Transfer transfer) {
+    public synchronized void updateAccountBalance(Transfer transfer) {
 
         AccountDetails accountDetails = accountDetailsService.findAccountById(transfer.getAccountDetails().getId());
         BigDecimal balanceAccount = accountDetails.getMoney();
@@ -31,12 +30,12 @@ public class BalanceManager implements Updatable {
             case "up" -> accountDetails.setMoney(balanceAccount.add(transfer.getTransferMoney()));
             case "down" ->
                     {
-                        if((balanceAccount.compareTo(transfer.getTransferMoney()) == 1)) {
+                        if((balanceAccount.compareTo(transfer.getTransferMoney()) > 0)) {
                             accountDetails.setMoney(balanceAccount.subtract(transfer.getTransferMoney()));
                         }
                         else throw new NoMoneyOnBalance("No money on balance for this operation");
                     }
-            default -> {throw new UnsupportedOperationException("Wrong operation");}
+            default -> throw new UnsupportedOperationException("Wrong operation");
         }
         accountDetailsService.updateAccountDetails(accountDetails);
     }

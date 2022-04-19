@@ -60,4 +60,10 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     private List<AccountDetails> accountDetails;
 
+    @OneToOne(mappedBy = "user")
+    private Flat flat;
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    private List<Order> orders;
+
 }
