@@ -1,4 +1,4 @@
-package com.example.paysystem.exception;
+package com.example.paysystem.exception.security;
 
 public class NoHasAccessForThisInformation extends RuntimeException{
     public NoHasAccessForThisInformation() {

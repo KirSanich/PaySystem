@@ -2,7 +2,7 @@ package com.example.paysystem.security;
 
 import com.example.paysystem.entity.Role;
 import com.example.paysystem.entity.User;
-import com.example.paysystem.exception.NoHasAccessForThisInformation;
+import com.example.paysystem.exception.security.NoHasAccessForThisInformation;
 import com.example.paysystem.exception.user.UserWithUsernameNotFound;
 import com.example.paysystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

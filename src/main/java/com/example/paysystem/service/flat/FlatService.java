@@ -9,4 +9,8 @@ public interface FlatService {
     List<Flat> getAllFlats();
 
     void createFlat(Flat flat);
+
+    Flat findFlatById(Long id);
+
+    boolean isFlatEnabled(Long id);
 }
