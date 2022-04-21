@@ -33,11 +33,22 @@ public class Order {
     @Column(name = "order_date_to")
     private OffsetDateTime toUtc;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name = "consumer_id",nullable = false)
+    @Column(name = "track_number")
+    private Long trackNumber;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "consumer_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_details_id")
+    private AccountDetails accountDetails;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flat_id")
     private Flat flat;
 

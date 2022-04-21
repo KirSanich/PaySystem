@@ -18,6 +18,8 @@ public class OrderMapper {
                 .prepay(order.getPrepay())
                 .from(order.getFromUtc())
                 .to(order.getToUtc())
+                .trackNumber(order.getTrackNumber())
+                .orderStatus(order.getOrderStatus())
                 .build();
     }
 }

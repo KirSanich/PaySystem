@@ -1,19 +1,16 @@
 package com.example.paysystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+public enum OrderStatus {
 
-public enum Operation {
+    Registered("regist"),
+    New("new"),
+    Cancelled("cancel");
 
-    BalanceUp("up"),
-    BalanceDown("down");
+    private String abbreviation;
 
-    private final String abbreviation;
-
-    Operation(String abbreviation) {
+    OrderStatus(String abbreviation) {
         this.abbreviation = abbreviation;
     }
 

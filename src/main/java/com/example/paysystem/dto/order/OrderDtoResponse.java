@@ -1,5 +1,7 @@
 package com.example.paysystem.dto.order;
 
+import com.example.paysystem.entity.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +23,12 @@ public class OrderDtoResponse {
 
     private BigDecimal prepay;
 
+    @JsonProperty(value = "status")
+    private OrderStatus orderStatus;
+
     private OffsetDateTime from;
+
+    private Long trackNumber;
 
     private OffsetDateTime to;
 

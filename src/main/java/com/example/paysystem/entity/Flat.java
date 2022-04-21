@@ -1,6 +1,7 @@
 package com.example.paysystem.entity;
 
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,11 +35,12 @@ public class Flat {
     @Column(name = "price_for_one_day")
     private BigDecimal priceForDay;
 
-
     @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name = "owner_id")
     private User user;
 
-    @OneToOne(mappedBy = "flat")
-    private Order order;
+    @OneToMany(mappedBy = "flat",fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    private List<Order> orders;
+
+
 }
