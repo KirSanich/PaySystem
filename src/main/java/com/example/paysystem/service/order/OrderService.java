@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 
@@ -23,4 +24,6 @@ public interface OrderService {
     Order findOrderById(Long id);
 
     Order findOrderByTrackNumber(Long trackNumber);
+
+    Order findOrderByExpireDate(OffsetDateTime expireDateTime);
 }

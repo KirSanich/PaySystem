@@ -36,6 +36,9 @@ public class Order {
     @Column(name = "track_number")
     private Long trackNumber;
 
+    @Column(name = "order_expire_date")
+    private OffsetDateTime expireDate;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

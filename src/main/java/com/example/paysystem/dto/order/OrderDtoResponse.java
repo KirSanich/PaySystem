@@ -32,4 +32,6 @@ public class OrderDtoResponse {
 
     private OffsetDateTime to;
 
+    private OffsetDateTime expireDate;
+
 }

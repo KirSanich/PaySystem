@@ -8,12 +8,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByTrackNumber(Long TrackNumber);
+
+    Optional<Order> findByExpireDate(OffsetDateTime expireDate);
 
     @Modifying
     @Query(value = "DELETE FROM orders t WHERE t.id = :id",nativeQuery = true)

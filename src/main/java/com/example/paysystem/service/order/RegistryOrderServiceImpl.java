@@ -7,12 +7,10 @@ import com.example.paysystem.exception.order.OrderWithUnavailableParameters;
 import com.example.paysystem.service.accountdetails.AccountDetailsService;
 import com.example.paysystem.service.email.EmailService;
 import com.example.paysystem.service.flat.FlatService;
-import com.example.paysystem.service.transfer.BalanceManager;
 import com.example.paysystem.service.transfer.Updatable;
 import com.example.paysystem.service.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -62,8 +59,9 @@ public class RegistryOrderServiceImpl implements RegistryOrderService {
             Flat flat = flatService.findFlatById(orderDtoRequest.getFlatId());
             BigDecimal flatPriceForDay = flat.getPriceForDay();
             BigDecimal totalPrice = totalSumCalculatorService.calculateTotalSum(orderDtoRequest.getFrom(), orderDtoRequest.getTo(), flatPriceForDay);
-            OffsetDateTime dayExpirePrepay = orderDtoRequest.getFrom().plusDays(1);
+            OffsetDateTime dayExpirePrepay = orderDtoRequest.getFrom().plusDays(3);
             flat.setBooked(true);
+            long orderNumber =ThreadLocalRandom.current().nextLong();
             Order order = Order.builder()
                     .totalPrice(totalPrice)
                     .user(userService.findUserById(orderDtoRequest.getConsumerId()))
@@ -72,17 +70,22 @@ public class RegistryOrderServiceImpl implements RegistryOrderService {
                     .accountDetails(accountDetailsService.findAccountById(orderDtoRequest.getConsumerAccountId()))
                     .fromUtc(orderDtoRequest.getFrom())
                     .toUtc(orderDtoRequest.getTo())
-                    .trackNumber(ThreadLocalRandom.current().nextLong())
+                    .trackNumber(orderNumber)
                     .orderStatus(OrderStatus.Registered)
+                    .expireDate(dayExpirePrepay)
                     .build();
-            AccountDetails accountDetails = accountDetailsService.findAccountById(orderDtoRequest.getConsumerAccountId());
+
+
+            AccountDetails accountDetailsConsumer = accountDetailsService.findAccountById(orderDtoRequest.getConsumerAccountId());
             Transfer transfer = Transfer.builder()
                     .operation(Operation.BalanceDown)
                     .dateTransfer(OffsetDateTime.now())
                     .transferMoney(prepayPercentCalculatorService.calculatePrepayPrice(totalPrice))
-                    .accountDetails(accountDetails)
+                    .accountDetails(accountDetailsConsumer)
                     .build();
             balanceManager.updateAccountBalance(transfer);
+
+
             emailService.sendMessage(userService.findUserById(orderDtoRequest.getConsumerId()).getEmail(),
                     "You have booked the flat:" + order.getFlat().getId() + "\n"
                             + "Total price:" + order.getTotalPrice() + "$ " + "\n"
@@ -93,6 +96,27 @@ public class RegistryOrderServiceImpl implements RegistryOrderService {
                             + "Please notify if you want cancel the order, prepay will not return if has already passed one day" + "\n"
                             + "Your expiration prepay date is:" + dayExpirePrepay,
                     "Order with number:" + order.getTrackNumber());
+
+            User owner = userService.findUserById(flat.getUser().getId());
+            AccountDetails accountDetailsOwner = accountDetailsService.findAccountById(owner.getId());
+            Transfer transfer1 = Transfer.builder()
+                    .operation(Operation.BalanceUp)
+                    .dateTransfer(OffsetDateTime.now())
+                    .transferMoney(prepayPercentCalculatorService.calculatePrepayPrice(totalPrice))
+                    .accountDetails(accountDetailsConsumer)
+                    .build();
+            balanceManager.updateAccountBalance(transfer);
+            emailService.sendMessage(owner.getEmail(),
+                    "Your flat has booked:" + order.getFlat().getId() + "\n"
+                            + "Total price:" + order.getTotalPrice() + "$ " + "\n"
+                            + "Prepay:" + order.getPrepay() + "$ " + "\n"
+                            + "From date:" + order.getFromUtc() + "\n"
+                            + "To date:" + order.getToUtc() + "\n"
+                            + "ClientID:" + order.getUser().getId() + "\n"
+                            + "--------------------------" + "\n"
+                            + "Expiration prepay date is:" + dayExpirePrepay,
+                    "Order with number:" + order.getTrackNumber());
+
 
             return order;
         } else

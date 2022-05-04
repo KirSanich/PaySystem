@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -59,5 +60,11 @@ public class OrderServiceImpl implements OrderService {
     public Order findOrderByTrackNumber(Long trackNumber) {
         log.info("Searching order with track number:" + trackNumber);
         return orderRepository.findByTrackNumber(trackNumber).orElseThrow(() -> new RuntimeException("No exist order with track number:" + trackNumber));
+    }
+
+    @Override
+    public Order findOrderByExpireDate(OffsetDateTime expireDateTime) {
+        log.info("Searching order with expire date:" + expireDateTime);
+        return orderRepository.findByExpireDate(expireDateTime).orElseThrow(() -> new RuntimeException("No exist order with expire date" + expireDateTime));
     }
 }

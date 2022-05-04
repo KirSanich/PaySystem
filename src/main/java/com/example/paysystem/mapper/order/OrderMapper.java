@@ -5,6 +5,8 @@ import com.example.paysystem.entity.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
+
 @Component
 @AllArgsConstructor
 public class OrderMapper {
@@ -20,6 +22,7 @@ public class OrderMapper {
                 .to(order.getToUtc())
                 .trackNumber(order.getTrackNumber())
                 .orderStatus(order.getOrderStatus())
+                .expireDate(order.getExpireDate())
                 .build();
     }
 }
